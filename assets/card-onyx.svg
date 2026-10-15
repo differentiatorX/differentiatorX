@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" width="600" height="340" role="img" aria-label="Onyx: payments set in stone. A MERN payment gateway with idempotent APIs, a double-entry ledger and reliable webhooks.">
+<title>Onyx</title>
+<defs>
+<radialGradient id="slab" cx="85%" cy="0%" r="120%"><stop offset="0" stop-color="#26282c"/><stop offset="0.35" stop-color="#17181b"/><stop offset="0.8" stop-color="#0d0e10"/></radialGradient>
+<filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0"/></filter>
+
+<radialGradient id="ms" cx="35%" cy="28%" r="85%"><stop offset="0" stop-color="#34363b"/><stop offset="0.5" stop-color="#141518"/><stop offset="1" stop-color="#050506"/></radialGradient>
+<linearGradient id="ma" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E2B07A"/><stop offset="1" stop-color="#A86E35"/></linearGradient>
+<linearGradient id="mh" x1="0.1" y1="0" x2="0.7" y2="0.8"><stop offset="0" stop-color="#fff" stop-opacity="0.28"/><stop offset="0.5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<clipPath id="mc"><circle cx="32" cy="32" r="30"/></clipPath>
+
+<clipPath id="cc"><rect width="600" height="340" rx="20"/></clipPath>
+<radialGradient id="aglow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#E0B07C" stop-opacity="0.2"/><stop offset="1" stop-color="#E0B07C" stop-opacity="0"/></radialGradient>
+</defs>
+<style>
+  .lab { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace; font-size: 12px; fill: #8E9198; letter-spacing: 0.04em; }
+  .tag { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 600; fill: #E0B07C; }
+  .desc { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14.5px; fill: #B5B8BD; }
+  .chip { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: 600; fill: #C9CBCF; }
+  .pulse { animation: pulse 2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes pulse { 0% { opacity: 0.8; transform: scale(1); } 100% { opacity: 0; transform: scale(3); } }
+  @keyframes float { 50% { transform: translateY(-6px); } }
+  @media (prefers-reduced-motion: reduce) { * { animation-play-state: paused !important; } }
+</style>
+<rect width="600" height="340" rx="20" fill="url(#slab)"/>
+  <rect width="600" height="340" rx="20" filter="url(#grain)" opacity="0.06"/>
+  <rect x="0.5" y="0.5" width="599" height="339" rx="19.5" fill="none" stroke="#ffffff" stroke-opacity="0.07"/>
+<g clip-path="url(#cc)"><ellipse cx="470" cy="170" rx="210" ry="190" fill="url(#aglow)"/></g>
+<circle cx="35" cy="42" r="3.5" fill="#E0B07C"/><text class="lab" x="46" y="46">onyx</text>
+<g fill="#ECEAE5" transform="translate(30.00 96.00) scale(0.04000 -0.04000)" ><path transform="translate(0.0 0)" d="M270 -9Q222 -9 180.0 19.5Q138 48 106.5 98.0Q75 148 57.5 215.5Q40 283 40 361Q40 439 57.5 506.0Q75 573 106.5 623.5Q138 674 180.0 702.0Q222 730 270 730Q318 730 359.5 702.0Q401 674 433.0 623.5Q465 573 482.5 506.0Q500 439 500 361Q500 283 482.5 215.5Q465 148 433.0 98.0Q401 48 359.5 19.5Q318 -9 270 -9ZM270 18Q341 18 381.0 103.0Q421 188 421 361Q421 534 381.0 618.5Q341 703 270 703Q200 703 159.5 618.5Q119 534 119 361Q119 188 159.5 103.0Q200 18 270 18Z"/><path transform="translate(534.0 0)" d="M30 0Q15 0 15 11Q15 20 28 23L40 25Q61 29 67.5 37.5Q74 46 74 67V403Q74 421 68.5 427.5Q63 434 49 436L28 439Q15 440 15 450Q15 458 31 461Q62 466 78.5 477.0Q95 488 113 504Q122 513 128 513Q137 513 137 501V456Q137 447 143.5 444.5Q150 442 158 450Q198 488 228.5 502.0Q259 516 293 516Q338 516 365.0 484.5Q392 453 392 392V67Q392 46 398.5 37.5Q405 29 426 26L448 23Q459 21 459 11Q459 0 447 0H279Q265 0 265 11Q265 21 276 23L290 25Q311 28 317.5 37.0Q324 46 324 67V381Q324 430 306.0 450.0Q288 470 255 470Q223 470 197.5 451.5Q172 433 157.0 402.5Q142 372 142 335V67Q142 46 148.5 37.0Q155 28 176 26L203 23Q214 21 214 12Q214 0 199 0Z"/><path transform="translate(998.0 0)" d="M83 -205Q56 -205 40.0 -186.5Q24 -168 24 -144Q24 -125 35.0 -112.0Q46 -99 65 -99Q81 -99 88.0 -106.0Q95 -113 98.0 -122.0Q101 -131 104.0 -138.0Q107 -145 116 -145Q127 -145 136.0 -129.5Q145 -114 161 -64Q171 -34 173.5 -12.0Q176 10 172.5 35.0Q169 60 157 96L48 443Q41 467 34.5 474.0Q28 481 14 484L-1 487Q-14 490 -14 500Q-14 510 0 510H165Q179 510 179 500Q179 489 166 487L150 485Q126 482 119.5 473.5Q113 465 120 443L208 150Q211 140 217.5 140.0Q224 140 227 150L312 425Q320 452 316.5 465.5Q313 479 288 483L267 487Q254 490 254 500Q254 510 268 510H395Q409 510 409 499Q409 489 397 485L388 482Q373 477 363.0 464.0Q353 451 342 419L193 -46Q171 -116 153.5 -150.0Q136 -184 120.0 -194.5Q104 -205 83 -205Z"/><path transform="translate(1393.0 0)" d="M227 0Q213 0 213 10Q213 20 226 23L241 26Q271 33 257 59L186 199Q182 206 176.5 206.5Q171 207 167 199L102 77Q80 35 109 29L135 23Q148 20 148 10Q148 0 134 0H6Q-8 0 -8 11Q-8 22 4 25L16 28Q35 33 48.0 43.5Q61 54 81 91L155 227Q163 242 157 256L62 443Q51 466 43.5 474.0Q36 482 26 484L11 487Q-2 490 -2 500Q-2 510 12 510H160Q174 510 174 500Q174 490 161 487L146 484Q116 477 130 451L198 319Q202 312 207.0 312.0Q212 312 216 319L276 433Q298 475 269 481L243 487Q230 490 230 500Q230 510 244 510H372Q386 510 386 499Q386 488 374 485L362 482Q343 478 330.0 467.5Q317 457 297 419L228 291Q219 276 227 260L325 67Q337 43 344.0 35.5Q351 28 361 26L376 23Q389 20 389 10Q389 0 375 0Z"/></g>
+<text class="tag" x="30" y="128">Payments, set in stone</text>
+<text class="desc" x="30" y="164">A payment gateway built to stay correct</text><text class="desc" x="30" y="186">when things fail: idempotent APIs, a</text><text class="desc" x="30" y="208">double-entry ledger, reliable webhooks.</text>
+<rect x="30" y="268" width="71" height="24" rx="12" fill="#17181b" stroke="#ffffff" stroke-opacity="0.12"/><text class="chip" x="66" y="284" text-anchor="middle">Node.js</text><rect x="108.1" y="268" width="56" height="24" rx="12" fill="#17181b" stroke="#ffffff" stroke-opacity="0.12"/><text class="chip" x="136" y="284" text-anchor="middle">React</text><rect x="171.6" y="268" width="71" height="24" rx="12" fill="#17181b" stroke="#ffffff" stroke-opacity="0.12"/><text class="chip" x="207" y="284" text-anchor="middle">MongoDB</text><rect x="249.7" y="268" width="56" height="24" rx="12" fill="#17181b" stroke="#ffffff" stroke-opacity="0.12"/><text class="chip" x="278" y="284" text-anchor="middle">Redis</text><rect x="30" y="300" width="64" height="24" rx="12" fill="#17181b" stroke="#ffffff" stroke-opacity="0.12"/><text class="chip" x="62" y="316" text-anchor="middle">BullMQ</text><rect x="100.8" y="300" width="78" height="24" rx="12" fill="#17181b" stroke="#ffffff" stroke-opacity="0.12"/><text class="chip" x="140" y="316" text-anchor="middle">Razorpay</text>
+<g style="animation: float 8s ease-in-out infinite"><g transform="translate(372 48) scale(3.0)"><circle cx="32" cy="32" r="30" fill="url(#ms)"/>
+    <g clip-path="url(#mc)"><g transform="rotate(-32 26 42)"><g><animateTransform attributeName="transform" type="rotate" from="0 26 42" to="360 26 42" dur="60s" repeatCount="indefinite"/>
+      <ellipse cx="26" cy="42" rx="48" ry="33" fill="none" stroke="#EDE9E2" stroke-opacity="0.09" stroke-width="0.6"/>
+      <ellipse cx="26" cy="42" rx="35" ry="24" fill="none" stroke="#EDE9E2" stroke-opacity="0.08" stroke-width="0.4"/>
+      <ellipse cx="26" cy="42" rx="18" ry="12" fill="none" stroke="#E2B07A" stroke-opacity="0.25" stroke-width="0.5"/>
+      <ellipse cx="26" cy="42" rx="40" ry="27" fill="none" stroke="#EDE9E2" stroke-opacity="0.18" stroke-width="1.2"/>
+      <ellipse cx="26" cy="42" rx="31" ry="21" fill="none" stroke="#EDE9E2" stroke-opacity="0.32" stroke-width="1.6"/>
+      <ellipse cx="26" cy="42" rx="22.5" ry="15" fill="none" stroke="url(#ma)" stroke-width="3.6"/>
+      <ellipse cx="26" cy="42" rx="14" ry="9.2" fill="none" stroke="#EDE9E2" stroke-opacity="0.75" stroke-width="2"/>
+      <ellipse cx="26" cy="42" rx="6.5" ry="4.2" fill="#EDE9E2" fill-opacity="0.9"/>
+    </g></g></g>
+    <circle cx="32" cy="32" r="30" fill="url(#mh)"/>
+    <circle cx="32" cy="32" r="29.5" fill="none" stroke="#fff" stroke-opacity="0.12" stroke-width="1"/>
+  <ellipse cx="26" cy="42" rx="22.5" ry="15" transform="rotate(-32 26 42)" fill="none" stroke="#FFF3E2" stroke-opacity="0.75" stroke-width="1.2" stroke-dasharray="7 150" stroke-linecap="round" clip-path="url(#mc)"><animate attributeName="stroke-dashoffset" from="0" to="-157" dur="5s" repeatCount="indefinite"/></ellipse></g></g>
+  <g transform="translate(368 268)"><circle cx="8" cy="10" r="8" fill="#52C493" fill-opacity="0.15" stroke="#52C493" stroke-opacity="0.6"/><path d="M4,10.5 l3,3 l5,-6.5" fill="none" stroke="#52C493" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="24" y="15" style="font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;font-size:12.5px;fill:#7FD3AD">debits = credits</text></g>
+</svg>

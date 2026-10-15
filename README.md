@@ -1,7 +1,7 @@
 <!-- differentiatorX | Madhur Mittal -->
 <div align="center">
 
-<img alt="Madhur Mittal, differentiatorX. Student at DTU, Mathematics and Computing 2029. Builds full-stack apps, real-time systems and firmware for robots." src="assets/hero.svg" width="100%">
+<img alt="Madhur Mittal, differentiatorX, painted into a Starry Night sky that falls into a black hole. Student at DTU, Mathematics and Computing 2029." src="assets/hero.svg" width="100%">
 
 <br><br>
 
@@ -45,9 +45,9 @@
 <img src="assets/divider.svg" width="100%" alt="">
 
 <p>
-  <a href="https://www.linkedin.com/in/differentiatorx"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-differentiatorx-0D0E10?logo=linkedin&logoColor=C4B5FD&labelColor=17181b"></a>
-  <a href="https://www.instagram.com/madhurdristi/"><img alt="Instagram: madhurdristi, photography" src="https://img.shields.io/badge/Photography-%40madhurdristi-0D0E10?logo=instagram&logoColor=C4B5FD&labelColor=17181b"></a>
-  <a href="mailto:madhur.m2006@gmail.com"><img alt="Email" src="https://img.shields.io/badge/Email-madhur.m2006%40gmail.com-0D0E10?logo=gmail&logoColor=C4B5FD&labelColor=17181b"></a>
+  <a href="https://www.linkedin.com/in/differentiatorx"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-differentiatorx-0A1638?logo=linkedin&logoColor=F4D35E&labelColor=10224f"></a>
+  <a href="https://www.instagram.com/madhurdristi/"><img alt="Instagram: madhurdristi, photography" src="https://img.shields.io/badge/Photography-%40madhurdristi-0A1638?logo=instagram&logoColor=F4D35E&labelColor=10224f"></a>
+  <a href="mailto:madhur.m2006@gmail.com"><img alt="Email" src="https://img.shields.io/badge/Email-madhur.m2006%40gmail.com-0A1638?logo=gmail&logoColor=F4D35E&labelColor=10224f"></a>
 </p>
 
 </div>

@@ -46,7 +46,7 @@
 
 <p>
   <a href="https://www.linkedin.com/in/differentiatorx"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-differentiatorx-0A1638?logo=linkedin&logoColor=F4D35E&labelColor=10224f"></a>
-  <a href="https://www.instagram.com/madhurdristi/"><img alt="Instagram: madhurdristi, photography" src="https://img.shields.io/badge/Photography-%40madhurdristi-0A1638?logo=instagram&logoColor=F4D35E&labelColor=10224f"></a>
+  <a href="https://www.instagram.com/madhurdrishti/"><img alt="Instagram: madhurdristi, photography" src="https://img.shields.io/badge/Photography-%40madhurdristi-0A1638?logo=instagram&logoColor=F4D35E&labelColor=10224f"></a>
   <a href="mailto:madhur.m2006@gmail.com"><img alt="Email" src="https://img.shields.io/badge/Email-madhur.m2006%40gmail.com-0A1638?logo=gmail&logoColor=F4D35E&labelColor=10224f"></a>
 </p>
 

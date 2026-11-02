@@ -9,7 +9,7 @@
 <br>
 
 <a href="https://www.linkedin.com/in/differentiatorx"><img src="https://img.shields.io/badge/LinkedIn-differentiatorx-0A1638?style=for-the-badge&logo=linkedin&logoColor=F4D35E&labelColor=10224F" alt="LinkedIn"></a>
-<a href="https://www.instagram.com/madhurdristi"><img src="https://img.shields.io/badge/Photography-%40madhurdristi-0A1638?style=for-the-badge&logo=instagram&logoColor=F4D35E&labelColor=10224F" alt="Instagram: madhurdristi"></a>
+<a href="https://www.instagram.com/madhurdrishti"><img src="https://img.shields.io/badge/Photography-%40madhurdrishti-0A1638?style=for-the-badge&logo=instagram&logoColor=F4D35E&labelColor=10224F" alt="Instagram: madhurdrishti"></a>
 <a href="mailto:madhur.m2006@gmail.com"><img src="https://img.shields.io/badge/Email-madhur.m2006%40gmail.com-0A1638?style=for-the-badge&logo=gmail&logoColor=F4D35E&labelColor=10224F" alt="Email"></a>
 <img src="https://komarev.com/ghpvc/?username=differentiatorX&label=Observers&color=0A1638&style=for-the-badge" alt="Profile views">
 
@@ -37,8 +37,8 @@
 <a href="https://github.com/differentiatorX/CodeSync-project"><img src="assets/card-codesync.svg" width="100%" alt="CodeSync: interviews with video and code."></a>
 <p align="center"><a href="https://github.com/differentiatorX/CodeSync-project"><b>Code</b></a></p>
 
-<a href="https://www.instagram.com/madhurdristi"><img src="assets/card-photo.svg" width="100%" alt="Through the lens: photography by Madhur, @madhurdristi."></a>
-<p align="center"><a href="https://www.instagram.com/madhurdristi"><b>See the photos</b></a></p>
+<a href="https://www.instagram.com/madhurdrishti"><img src="assets/card-photo.svg" width="100%" alt="Through the lens: photography by Madhur, @madhurdrishti."></a>
+<p align="center"><a href="https://www.instagram.com/madhurdrishti"><b>See the photos</b></a></p>
 
 <a href="https://github.com/differentiatorX?tab=repositories"><img src="assets/card-more.svg" width="100%" alt="Everything else: labs, coursework, works in progress."></a>
 <p align="center"><a href="https://github.com/differentiatorX?tab=repositories"><b>All repositories</b></a></p>

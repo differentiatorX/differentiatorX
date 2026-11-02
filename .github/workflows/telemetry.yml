@@ -1,4 +1,4 @@
-name: comet-snake
+name: telemetry
 
 on:
   schedule:
@@ -11,16 +11,23 @@ permissions:
   contents: write
 
 jobs:
-  generate:
+  build:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Paint the contribution graph
+      - uses: actions/checkout@v4
+
+      - name: Draw the telemetry card
+        run: python3 .github/scripts/telemetry.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Let the comet eat the contribution graph
         uses: Platane/snk@v3
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
-            dist/snake.svg?color_snake=#F4D35E&color_dots=#0F2150,#1B3A7A,#2E5FB0,#5A8DD6,#9FC3E8&color_dot_border=#0A1638&color_background=#0A1638
+            dist/snake.svg?color_snake=#F4D35E&color_dots=#0F1A3A,#1B3A7A,#2E5FB0,#5A8DD6,#9FC3E8&color_dot_border=#0A1638&color_background=#0A1638
 
       - name: Publish to the output branch
         uses: crazy-max/ghaction-github-pages@v4

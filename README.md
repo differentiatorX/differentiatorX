@@ -1,10 +1,10 @@
 <div align="center">
 
-<a href="https://github.com/differentiatorX"><img src="assets/hero.svg" width="100%" alt="Madhur Mittal, differentiatorX, painted into a Starry Night sky collapsing into a black hole. Mathematics and Computing at DTU, class of 2029."></a>
+<a href="https://github.com/differentiatorX"><img src="assets/hero.svg" width="100%" alt="Madhur Mittal, differentiatorX: a ray-traced black hole bending a Van Gogh night sky. Mathematics and Computing at DTU, class of 2029."></a>
 
 <img src="assets/divider.svg" width="100%" alt="">
 
-<img src="assets/about.svg" width="100%" alt="whoami: Madhur Mittal. B.Tech Mathematics and Computing, DTU 2029. Full-stack, real-time systems, embedded and IoT, AI tooling. Building Echo. Photographer.">
+<img src="assets/about.svg" width="100%" alt="whoami: Madhur Mittal, B.Tech Mathematics and Computing at DTU 2029. Full-stack, real-time systems, payments, AI tooling. Building Echo. Photographer.">
 
 <br>
 
@@ -19,7 +19,7 @@
 
 <img src="assets/title-pulls.svg" width="100%" alt="Four gravitational pulls">
 
-<img src="assets/pillars.svg" width="100%" alt="Full-stack, real-time, embedded and IoT, AI tooling">
+<img src="assets/pillars.svg" width="100%" alt="Full-stack, real-time, payments, AI tooling">
 
 <img src="assets/divider.svg" width="100%" alt="">
 
@@ -47,7 +47,7 @@
 
 <img src="assets/title-stack.svg" width="100%" alt="The instruments">
 
-<img src="assets/stack.svg" width="100%" alt="Stack in orbit: C++, Python, JavaScript, TypeScript, React, Next.js, Node.js, Express, Socket.io, MongoDB, Redis, Docker, Git, Embedded C, FFmpeg, FastAPI">
+<img src="assets/stack.svg" width="100%" alt="Stack in orbit: C++, Python, JavaScript, TypeScript, React, Next.js, Node.js, Express, Socket.io, MongoDB, Redis, Docker, Git, FFmpeg, FastAPI">
 
 <img src="assets/divider.svg" width="100%" alt="">
 
@@ -55,12 +55,7 @@
 
 <div align="center">
 
-<img src="https://github-readme-stats.vercel.app/api?username=differentiatorX&show_icons=true&hide_border=true&include_all_commits=true&count_private=true&bg_color=0A1638&title_color=F4D35E&icon_color=9FC3E8&text_color=E8EEF9&ring_color=F4D35E" height="190" alt="GitHub stats">
-<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=differentiatorX&layout=compact&hide_border=true&bg_color=0A1638&title_color=F4D35E&text_color=E8EEF9" height="190" alt="Top languages">
-
-<img src="https://streak-stats.demolab.com?user=differentiatorX&hide_border=true&background=0A1638&ring=F4D35E&fire=E8A33D&currStreakLabel=F4D35E&sideLabels=E8EEF9&currStreakNum=E8EEF9&sideNums=E8EEF9&dates=9FB2D6" width="100%" alt="Contribution streak">
-
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=differentiatorX&bg_color=0A1638&color=E8EEF9&line=F4D35E&point=FFF1B8&area=true&area_color=2E5FB0&hide_border=true" width="100%" alt="Contribution activity">
+<img src="https://raw.githubusercontent.com/differentiatorX/differentiatorX/output/telemetry.svg" width="100%" alt="GitHub telemetry: contributions, commits, pull requests, streak, top languages and the last 52 weeks">
 
 <img src="https://raw.githubusercontent.com/differentiatorX/differentiatorX/output/snake.svg" width="100%" alt="A golden comet eating my contribution graph">
 
@@ -70,4 +65,4 @@
 
 <img src="assets/footer.svg" width="100%" alt="Thanks for falling in.">
 
-<p align="center"><sub>Every graphic here is hand-generated SVG, painted in the spirit of Vincent van Gogh's <i>The Starry Night</i> (1889) and bent by a black hole.</sub></p>
+<p align="center"><sub>The header is a real ray trace: every pixel's light was bent around a Schwarzschild black hole, through a sky painted in the spirit of Vincent van Gogh's <i>The Starry Night</i> (1889).</sub></p>

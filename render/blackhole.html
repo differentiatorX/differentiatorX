@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#eceef0;--ink2:#a3a9b0;--ink3:#6b7178;--acc:#ffb36b}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:#000;overflow:hidden}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+.ov{position:fixed;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.82) 0%,rgba(0,0,0,.62) 30%,rgba(0,0,0,0) 50%);color:var(--ink);font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased;pointer-events:none}
+.k{font:500 13px/1 'IBM Plex Mono',monospace;color:var(--ink2);letter-spacing:.02em}
+.k b{color:var(--acc);font-weight:500}
+h1{margin:16px 0 0;font-weight:700;font-size:76px;line-height:.98;letter-spacing:-.045em;background-image:linear-gradient(180deg,#fff 30%,#a7adb4);-webkit-background-clip:text;background-clip:text;color:transparent}
+p{margin:18px 0 0;font-size:18px;line-height:1.5;color:var(--ink2);max-width:27em}
+.q{font:400 13px/1.5 'IBM Plex Mono',monospace;color:var(--ink3)}
+.hud{position:absolute;font:400 11.5px/1.35 'IBM Plex Mono',monospace;color:var(--ink2);white-space:nowrap}
+.hud i{display:inline-block;width:6px;height:6px;border:1px solid var(--ink2);border-radius:50%;margin-right:8px;vertical-align:1px}
+.hud s{text-decoration:none;color:var(--ink3)}
+.line{position:absolute;height:1px;background:linear-gradient(90deg,rgba(236,238,240,.45),rgba(236,238,240,.08));transform-origin:0 50%}
+.rd{display:grid;grid-template-columns:auto auto;gap:6px 18px;font:400 12px/1.2 'IBM Plex Mono',monospace;color:var(--ink3)}
+.rd b{color:var(--ink);font-weight:500}
+.tag{display:inline-flex;gap:8px;align-items:center;font:500 12px/1 'IBM Plex Mono',monospace;color:var(--ink2);border:1px solid rgba(236,238,240,.16);padding:7px 11px;border-radius:999px;background:rgba(0,0,0,.35)}
+.tag i{width:6px;height:6px;border-radius:50%;background:var(--acc)}
+.hud.hot{color:#fff}.hud.hot i{border-color:var(--acc);background:var(--acc)}.hud.hot s{color:var(--acc)}
+.cap{position:absolute;right:52px;bottom:40px;display:flex;gap:14px;align-items:center;font:400 12.5px/1 'IBM Plex Mono',monospace;color:var(--ink2);white-space:nowrap}
+.cap b{color:var(--ink);font-weight:500}.cap em{font-style:normal;color:var(--acc)}.cap .dot{width:7px;height:7px;border-radius:50%;background:var(--acc)}
+.cap .bar{width:120px;height:2px;background:rgba(236,238,240,.12);position:relative}.cap .bar u{position:absolute;left:0;top:0;bottom:0;background:var(--acc)}
+</style></head><body>
+<canvas id="c"></canvas>
+<div class="ov" id="ov"></div>
+<script>
+const Q = new URLSearchParams(location.search);
+const V = Q.get('v') || 'A';
+const T = parseFloat(Q.get('t') || '0');
+const PRESET = {
+  A: { elev: 4.5, dist: 24, shift: [0.30, -0.02], T0: 4300, fov: 1.05, roll: -7, rout: 13, exp: .95, stars: 1 },
+  B: { elev: 26, dist: 24, shift: [0.30, 0.02], T0: 6200, fov: 0.95, roll: -4, rout: 8.5, exp: 1.0, stars: 1 },
+  D: { elev: 74, dist: 34, shift: [0.0, 0.0], T0: 5200, fov: 1.0, roll: 0, rout: 10, exp: .9, stars: .6 },
+  C: { elev: 11, dist: 21, shift: [0.0, 0.13], T0: 10500, fov: 1.15, roll: 4, rout: 12, exp: 0.95, stars: 1.2 },
+}[V];
+
+const cv = document.getElementById('c');
+const dpr = Math.min(parseFloat(Q.get('ss') || '2'), 3);
+const W = Math.round(innerWidth * dpr), H = Math.round(innerHeight * dpr);
+cv.width = W; cv.height = H;
+const gl = cv.getContext('webgl2', { antialias: false, preserveDrawingBuffer: true });
+if (!gl) throw new Error('no webgl2');
+gl.getExtension('EXT_color_buffer_float');
+
+const VS = `#version 300 es
+in vec2 p; out vec2 vu; void main(){ vu = p*.5+.5; gl_Position = vec4(p,0.,1.); }`;
+
+const SCENE = `#version 300 es
+precision highp float;
+in vec2 vu; out vec4 o;
+uniform vec2 uRes; uniform float uTime, uElev, uDist, uT0, uFov, uRoll, uRout, uExp, uStars; uniform vec2 uShift;
+uniform float uPhase, uLsim, uAz; uniform vec3 uPP; uniform float uPI;
+const float RIN = 3.0;           // ISCO for Schwarzschild, in units of r_s
+float h31(vec3 p){ p = fract(p*.1031); p += dot(p, p.zyx + 31.32); return fract((p.x+p.y)*p.z); }
+float n3(vec3 p){ vec3 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
+  return mix(mix(mix(h31(i),h31(i+vec3(1,0,0)),f.x),mix(h31(i+vec3(0,1,0)),h31(i+vec3(1,1,0)),f.x),f.y),
+             mix(mix(h31(i+vec3(0,0,1)),h31(i+vec3(1,0,1)),f.x),mix(h31(i+vec3(0,1,1)),h31(i+vec3(1,1,1)),f.x),f.y),f.z); }
+float fbm(vec3 p){ float a=.5, s=0.; for(int i=0;i<6;i++){ s+=a*n3(p); p=p*2.02+vec3(3.1,1.7,5.3); a*=.5; } return s; }
+// Planck's law sampled at three wavelengths; returns chroma normalised to its max channel
+vec3 planck(float T){
+  vec3 l = vec3(610e-9, 549e-9, 468e-9);
+  vec3 b = 1.0/(pow(l, vec3(5.)) * (exp(1.4388e-2/(l*max(T,300.))) - 1.0));
+  return b / max(max(b.r, b.g), b.b);
+}
+// sky: point stars plus a very faint galactic band; directions come from the bent ray
+vec3 sky(vec3 d){
+  vec3 c = vec3(0.);
+  for (int k=0;k<3;k++){
+    float sc = 140. + float(k)*170.;
+    vec3 q = d*sc; vec3 id = floor(q); vec3 f = fract(q)-.5;
+    float h = h31(id + float(k)*17.);
+    if (h > .985 - float(k)*.004) {
+      vec3 off = vec3(h31(id+1.), h31(id+2.), h31(id+3.)) - .5;
+      float dd = length(f - off*.6);
+      float m = exp(-dd*dd*90.) * pow((h-.98)/.02, 3.);
+      float t = mix(3600., 11000., h31(id+5.));
+      c += planck(t) * m * 1.8;
+    }
+  }
+  vec3 gp = normalize(vec3(.2, 1., .35));
+  float band = exp(-pow(dot(d, gp)*3.2, 2.));
+  float dust = fbm(d*5.5);
+  c += vec3(.55,.6,.75) * band * smoothstep(.45,.9,dust) * .012;
+  return c * uStars;
+}
+float texAt(float r, float ph){
+  vec2 rp = vec2(cos(ph), sin(ph));
+  float turb = fbm(vec3(rp*2.2, log(r)*9.0));
+  float fine = fbm(vec3(rp*7.0, log(r)*26.0 + 4.));
+  return .25 + 1.5*turb*turb*turb + .45*fine*fine;
+}
+vec4 disk(vec3 q, vec3 dir){
+  float r = length(q);
+  float phi = atan(q.z, q.x);
+  float omega = .7071 / pow(r, 1.5);                 // Kepler, M = 0.5 in r_s units
+  float x = RIN / r;
+  float T = uT0 * pow(x, .75) * pow(max(1. - sqrt(x), 0.), .25) / .488;
+  vec3 tang = normalize(vec3(-q.z, 0., q.x));        // prograde
+  float beta = sqrt(.5 / max(r - 1., .05));
+  float gam = inversesqrt(1. - beta*beta);
+  float cosT = dot(tang, -dir);
+  float g = (1. / (gam * (1. - beta * cosT))) * sqrt(1. - 1./r);   // Doppler x gravitational redshift
+  // two copies of the turbulence, one phase apart, crossfaded so the loop has no seam
+  float tex = mix(texAt(r, phi - omega*uPhase*uLsim*6.2831853), texAt(r, phi - omega*(uPhase-1.)*uLsim*6.2831853), smoothstep(0.,1.,uPhase));
+  float edge = smoothstep(RIN, RIN + .35, r) * (1. - smoothstep(uRout*.55, uRout, r));
+  float dens = edge * tex;
+  float I = pow(g, 4.) * pow(T / uT0, 4.) * tex;
+  vec3 e = planck(T * g) * I * 2.6;
+  return vec4(e, clamp(dens * .95, 0., 1.));
+}
+void main(){
+  vec2 uv = (vu*uRes - .5*uRes) / uRes.y;
+  float cr = cos(radians(uRoll)), sr = sin(radians(uRoll));
+  uv = mat2(cr, -sr, sr, cr) * uv - uShift;
+  float e = radians(uElev);
+  vec3 cam = uDist * vec3(sin(uAz)*cos(e), sin(e), -cos(uAz)*cos(e));
+  vec3 f = normalize(-cam), up = vec3(0,1,0);
+  vec3 rt = normalize(cross(up, f)), cu = cross(f, rt);
+  vec3 v = normalize(f + uFov*(uv.x*rt + uv.y*cu));
+  vec3 p = cam;
+  vec3 hc = cross(p, v); float h2 = dot(hc, hc);
+  vec3 col = vec3(0.); float al = 0.; bool esc = false;
+  for (int i=0; i<520; i++){
+    float r2 = dot(p,p), r = sqrt(r2);
+    if (r < 1.0) break;
+    if (r > uDist*1.4 && dot(p, v) > 0.) { esc = true; break; }
+    float dt = clamp(.035*r2, .012, .9);
+    vec3 a = -1.5*h2*p/(r2*r2*r);
+    vec3 vh = v + .5*a*dt;
+    vec3 pn = p + vh*dt;
+    float rn2 = dot(pn,pn);
+    vec3 an = -1.5*h2*pn/(rn2*rn2*sqrt(rn2));
+    vec3 vn = vh + .5*an*dt;
+    if (uPI > 0.) {
+      vec3 sg = pn - p; float L = length(sg);
+      float tt = clamp(dot(uPP - p, sg) / (L*L), 0., 1.);
+      float d = length(p + sg*tt - uPP);
+      float rp = length(uPP);
+      float gg = sqrt(max(1. - 1./rp, 0.));
+      col += (1. - al) * planck(9000.*gg) * pow(gg, 4.) * uPI * exp(-d*d/.012) * L * 9.;
+    }
+    if (p.y*pn.y < 0.) {
+      vec3 qq = mix(p, pn, p.y/(p.y - pn.y));
+      float rq = length(qq);
+      if (rq > RIN*.9 && rq < uRout) {
+        vec4 d = disk(qq, normalize(vn));
+        col += (1. - al) * d.rgb * d.a; al += (1. - al) * d.a;
+        if (al > .995) break;
+      }
+    }
+    p = pn; v = vn;
+  }
+  if (esc) col += (1. - al) * sky(normalize(v));
+  o = vec4(col * uExp, 1.);
+}`;
+
+const BRIGHT = `#version 300 es
+precision highp float; in vec2 vu; out vec4 o; uniform sampler2D t; uniform vec2 px;
+void main(){ vec3 c = vec3(0.);
+  for(int y=-1;y<=1;y++) for(int x=-1;x<=1;x++) c += texture(t, vu + vec2(x,y)*px).rgb;
+  c /= 9.; float l = dot(c, vec3(.2126,.7152,.0722));
+  o = vec4(c * smoothstep(.55, 1.8, l), 1.); }`;
+const BLUR = `#version 300 es
+precision highp float; in vec2 vu; out vec4 o; uniform sampler2D t; uniform vec2 dir;
+void main(){ float w[7] = float[](.1964,.1747,.1209,.0656,.0279,.0093,.0024); vec3 c = texture(t,vu).rgb*w[0];
+  for(int i=1;i<7;i++){ c += texture(t, vu + dir*float(i)).rgb*w[i]; c += texture(t, vu - dir*float(i)).rgb*w[i]; }
+  o = vec4(c,1.); }`;
+const COMP = `#version 300 es
+precision highp float; in vec2 vu; out vec4 o; uniform sampler2D s, b1, b2; uniform vec2 uRes; uniform float uSeed;
+vec3 aces(vec3 x){ return clamp((x*(2.51*x+.03))/(x*(2.43*x+.59)+.14), 0., 1.); }
+float h(vec2 p){ return fract(sin(dot(p, vec2(12.9898,78.233)) + uSeed) * 43758.5453); }
+void main(){
+  vec3 c = texture(s, vu).rgb + texture(b1, vu).rgb*.18 + texture(b2, vu).rgb*.16;
+  c = aces(c);
+  c = pow(c, vec3(1./2.2));
+  vec2 q = vu - .5; c *= 1. - .35*dot(q,q);
+  c += (h(vu*uRes) - .5) * .03 * (.12 + sqrt(max(c.g, 0.)));
+  o = vec4(c, 1.); }`;
+
+function prog(fs){ const p = gl.createProgram();
+  for (const [t,src] of [[gl.VERTEX_SHADER,VS],[gl.FRAGMENT_SHADER,fs]]) { const s = gl.createShader(t); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s)); gl.attachShader(p, s); }
+  gl.bindAttribLocation(p, 0, 'p'); gl.linkProgram(p); if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p)); return p; }
+function target(w,h){ const tx = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tx);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA16F, w, h, 0, gl.RGBA, gl.HALF_FLOAT, null);
+  for (const k of [gl.TEXTURE_MIN_FILTER, gl.TEXTURE_MAG_FILTER]) gl.texParameteri(gl.TEXTURE_2D, k, gl.LINEAR);
+  for (const k of [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T]) gl.texParameteri(gl.TEXTURE_2D, k, gl.CLAMP_TO_EDGE);
+  const fb = gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER, fb); gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tx, 0);
+  return { tx, fb, w, h }; }
+const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,3,-1,-1,3]), gl.STATIC_DRAW);
+gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+const P = { scene: prog(SCENE), bright: prog(BRIGHT), blur: prog(BLUR), comp: prog(COMP) };
+const S = target(W, H), A1 = target(W>>2, H>>2), B1 = target(W>>2, H>>2), A2 = target(W>>3, H>>3), B2 = target(W>>3, H>>3);
+function draw(p, out, set){ gl.useProgram(p); gl.bindFramebuffer(gl.FRAMEBUFFER, out ? out.fb : null); gl.viewport(0, 0, out ? out.w : W, out ? out.h : H); set(p); gl.drawArrays(gl.TRIANGLES, 0, 3); }
+const U = (p, n) => gl.getUniformLocation(p, n);
+const tex = (p, name, unit, t) => { gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, t.tx); gl.uniform1i(U(p, name), unit); };
+const LSIM = 4.0;
+// a test particle on a decaying orbit: slow at first, then the plunge inside the ISCO
+const PATH = (() => { const out = []; let phi = 2.2; const N = 2000;
+  for (let i = 0; i <= N; i++) { const s = i / N; const r = s >= 0.9 ? 0.5 : 1.0 + 9.6 * (1 - Math.pow(s / 0.9, 1.7));
+    out.push([r, phi]); phi += (0.7071 / Math.pow(Math.max(r, 1.2), 1.5)) * LSIM * 6.2831853 / N * 1.15; }
+  return out; })();
+function particle(ph){ const [r, phi] = PATH[Math.min(PATH.length - 1, Math.round(ph * (PATH.length - 1)))];
+  const fade = Math.min(1, ph / 0.05) * (r > 1.02 ? 1 : 0);
+  return [r*Math.cos(phi), 0.32*Math.min(1, (r-1)/3), r*Math.sin(phi), 1.4*fade]; }
+function render(time){
+  const R = PRESET;
+  draw(P.scene, S, (p) => { gl.uniform2f(U(p,'uRes'), W, H); gl.uniform1f(U(p,'uTime'), time); gl.uniform1f(U(p,'uElev'), R.elev); gl.uniform1f(U(p,'uDist'), R.dist);
+    gl.uniform1f(U(p,'uT0'), R.T0); gl.uniform1f(U(p,'uFov'), R.fov); gl.uniform1f(U(p,'uRoll'), R.roll); gl.uniform1f(U(p,'uRout'), R.rout); gl.uniform1f(U(p,'uExp'), R.exp); gl.uniform1f(U(p,'uStars'), R.stars); gl.uniform2f(U(p,'uShift'), R.shift[0], R.shift[1]);
+    const ph = ((time % 1) + 1) % 1, pp = particle(ph);
+    gl.uniform1f(U(p,'uPhase'), ph); gl.uniform1f(U(p,'uLsim'), LSIM); gl.uniform1f(U(p,'uAz'), Math.sin(ph*6.2831853)*0.09);
+    gl.uniform3f(U(p,'uPP'), pp[0], pp[1], pp[2]); gl.uniform1f(U(p,'uPI'), pp[3]); });
+  for (const [a, b] of [[A1, B1], [A2, B2]]) {
+    draw(P.bright, a, (p) => { tex(p, 't', 0, S); gl.uniform2f(U(p,'px'), 1/W, 1/H); });
+    for (let k = 0; k < 2; k++) {
+      draw(P.blur, b, (p) => { tex(p, 't', 0, a); gl.uniform2f(U(p,'dir'), (1.5+k)/a.w, 0); });
+      draw(P.blur, a, (p) => { tex(p, 't', 0, b); gl.uniform2f(U(p,'dir'), 0, (1.5+k)/a.h); });
+    }
+  }
+  draw(P.comp, null, (p) => { tex(p, 's', 0, S); tex(p, 'b1', 1, A1); tex(p, 'b2', 2, A2); gl.uniform2f(U(p,'uRes'), W, H); gl.uniform1f(U(p,'uSeed'), time * 7.3); });
+  gl.finish();
+}
+window.renderFrame = (t) => { render(t); if (window.overlay) overlay(((t % 1) + 1) % 1); return Q.get('bare') ? cv.toDataURL('image/png') : 'ok'; };
+if (!Q.get('bare')) render(T);
+window.__done = true;
+
+// ---- overlay copy per mockup ----
+const ov = document.getElementById('ov');
+if (Q.get('bare')) ov.style.display = 'none';
+const rs = 'r<sub style="font-size:.75em">s</sub>';
+if (V === 'A') ov.innerHTML = `
+  <div style="position:absolute;left:72px;top:150px">
+    <div class="k">differentiatorX · Mathematics &amp; Computing, DTU '29</div>
+    <h1>Madhur<br>Mittal</h1>
+    <p>Full-stack, real-time systems and payments. I write code that has to survive retries, outages and my own refactors.</p>
+    <div class="q" style="margin-top:26px">Nothing escapes, including edge cases.</div>
+  </div>
+  <div class="line" style="left:952px;top:226px;width:96px;transform:rotate(-24deg)"></div>
+  <div class="hud" id="hPS" style="left:1040px;top:170px"><i></i>photon sphere · 1.5 ${rs}<br><s>light orbits here, briefly</s></div>
+  <div class="line" style="left:930px;top:470px;width:70px;transform:rotate(30deg)"></div>
+  <div class="hud" id="hIS" style="left:994px;top:500px"><i></i>ISCO · 3 ${rs}<br><s>last stable orbit. prod lives here</s></div>
+  <div class="cap" id="cap"></div>`;
+const sub = (t) => `${t}<span style="font-size:.78em;vertical-align:-.22em">s</span>`;
+function overlay(ph){
+  const cap = document.getElementById('cap'); if (!cap) return;
+  const r = ph >= 0.9 ? 0 : 1 + 9.6 * (1 - Math.pow(ph / 0.9, 1.7));
+  let state, extra;
+  if (ph >= 0.9) { state = '<b>event horizon</b>'; extra = '<em>handled.</em> next one in a moment'; }
+  else if (r < 1.5) { state = '<b>photon sphere</b>'; extra = `r = ${r.toFixed(2)} ${sub('r')} · <em>no way back</em>`; }
+  else if (r < 3) { state = '<b>past the ISCO</b>'; extra = `r = ${r.toFixed(2)} ${sub('r')} · plunging`; }
+  else { state = '<b>edge case</b>'; extra = `r = ${r.toFixed(2)} ${sub('r')} · ${ph < 0.12 ? 'detected' : 'inbound'}`; }
+  const prog = ph >= 0.9 ? 100 : (10.6 - r) / 9.6 * 100;
+  cap.innerHTML = `<span class="dot"></span>${state}<span>${extra}</span><span class="bar"><u style="width:${prog.toFixed(1)}%"></u></span>`;
+  document.getElementById('hIS').classList.toggle('hot', r > 0 && r < 3.15 && r > 1.6);
+  document.getElementById('hPS').classList.toggle('hot', r > 0 && r <= 1.6);
+}
+overlay(T % 1);
+if (V === 'B') ov.innerHTML = `
+  <div style="position:absolute;left:64px;top:56px" class="rd">
+    <span>target</span><b>differentiatorX</b>
+    <span>inclination</span><b>64°</b>
+    <span>spin</span><b>a* = 0, for now</b>
+    <span>instrument</span><b>one laptop</b>
+  </div>
+  <div style="position:absolute;left:64px;bottom:64px">
+    <span class="tag"><i></i>imaged without the other seven telescopes</span>
+    <h1 style="font-size:84px;margin-top:20px">Madhur Mittal</h1>
+    <p style="margin-top:12px">Mathematics &amp; Computing at DTU. I build payment systems, real-time apps and AI tools that ship.</p>
+  </div>`;
+if (V === 'C') ov.innerHTML = `
+  <div style="position:absolute;left:0;right:0;bottom:70px;text-align:center">
+    <div class="k">differentiatorX · DTU '29 · full-stack · real-time · payments · AI tooling</div>
+    <h1 style="font-size:88px;margin-top:14px">Madhur Mittal</h1>
+    <div class="q" style="margin-top:14px">Time runs slower near deadlines. My commit timestamps agree.</div>
+  </div>
+  <div class="hud" style="right:56px;top:48px;text-align:right">rendered, not drawn<br><s>every pixel is a light ray bent by gravity</s></div>`;
+</script></body></html>
